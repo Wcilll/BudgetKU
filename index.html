@@ -13,19 +13,53 @@
       href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900;800&display=swap"
       rel="stylesheet"
     />
+    <!-- icon -->
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/regular/style.css"
+    />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/@phosphor-icons/web@2.1.1/src/fill/style.css"
+    />
   </head>
-  <!--content -->
+
   <body>
-    <header class="container">
-      <img src="img/moneysave.png" alt="Bag" />
-      <h2>PopWallet</h2>
+    <!--head -->
+    <header class="container header-main">
+      <div class="header-top">
+        <img src="img/moneysave.png" alt="Bag" />
+        <h2>PopWallet</h2>
+      </div>
+
+      <!-- budget sekarang ada di dalam header -->
+      <div class="budgets">
+        <div class="budget-card">
+          <h2 class="budget-name">Makan & Minum</h2>
+          <p class="budget-amount">Rp 20.000</p>
+          <p class="budget-total">Total Rp 50.000</p>
+        </div>
+        <div class="budget-card">
+          <h2 class="budget-name">Transport</h2>
+          <p class="budget-amount">Rp 15.000</p>
+          <p class="budget-total">Total Rp 30.000</p>
+        </div>
+        <button class="budget-button">+</button>
+      </div>
     </header>
 
-    <main class="container">
+    <main id="budget-detail" class="container">
       <div class="budget-card">
-        <h2 class="budget-name">Makan & Minum</h2>
-        <p class="budget-amount">Rp 20.000</p>
-        <p class="budget-total">Total Rp 50.000</p>
+        <div>
+          <h2 class="budget-name">Makan & Minum</h2>
+          <p class="budget-amount">Rp 20.000</p>
+          <p class="budget-total">Total Rp 50.000</p>
+        </div>
+        <div class="icon">
+          <i class="ph ph-pencil-simple-line"></i>
+        </div>
       </div>
     </main>
   </body>

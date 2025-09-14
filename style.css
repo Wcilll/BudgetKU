@@ -230,6 +230,27 @@ header h1 {
   font-weight: bold;
 }
 
+/* modal */
+
+.modal {
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal form {
+  background-color: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(82, 81, 81, 0.37);
+  padding: 2rem;
+  border-radius: 1rem;
+  width: 90%;
+}
+
 /* responsive */
 @media (max-width: 768px) {
   .budgets {

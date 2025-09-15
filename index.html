@@ -101,16 +101,36 @@
         </div>
       </div>
     </main>
-    <div class="modal">
+
+    <!-- modal -->
+    <div id="add-form" class="modal hidden">
       <div class="card">
         <div class="modal-card-heading">
-          <h4>Tambah Budget</h4>
+          <h4>Tambah Pemasukan</h4>
           <i class="ph ph-x"></i>
         </div>
-
         <form action="">
+          <label for="">Nama Pemasukan</label>
           <input type="text" placeholder="Nama Budget" />
-          <input type="number" placeholder="Jumlah Budget" />
+          <label for="">Jumlah Pemasukan</label>
+          <input type="number" placeholder="Rp" />
+          <button type="submit">Simpan</button>
+        </form>
+      </div>
+    </div>
+    <div id="spent-form" class="modal hidden">
+      <div class="card">
+        <div class="modal-card-heading">
+          <h4>Tambah Pengeluaran</h4>
+          <i class="ph ph-x"></i>
+        </div>
+        <form action="">
+          <label for="">Nama Pengeluaran</label>
+          <input type="text" placeholder="Nama Budget" />
+          <label for="">Jumlah Pengeluaran</label>
+          <input type="number" placeholder="Rp" />
+          <label for="">Tanggal</label>
+          <input type="date" />
           <button type="submit">Simpan</button>
         </form>
       </div>

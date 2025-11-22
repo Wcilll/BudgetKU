@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PopWallet || APP</title>
+    <title>PopWallet</title>
     <!-- css -->
     <link rel="stylesheet" href="style.css" />
     <!-- font -->
@@ -33,7 +33,7 @@
     </header>
 
     <!-- budget -->
-    <main class="container budgets hidden">
+    <main id="budget" class="container budgets hidden">
       <div class="budget-card">
         <h2 class="budget-name">Makan & Minum</h2>
         <p class="budget-amount">Rp 20.000</p>
@@ -47,7 +47,7 @@
       <button class="budget-button">+</button>
     </main>
 
-    <main id="budget-detail" class="container">
+    <main id="budget-detail" class="container hidden">
       <button class="back-home">
         <i class="ph ph-caret-left icon-back"></i> Halaman Utama
       </button>
@@ -64,11 +64,11 @@
       <button class="spent-button"><span>+</span> Pengeluaran</button>
       <div class="spent-sort">
         <i class="ph ph-funnel"></i>
-        <select name="" id="">
-          <option value="">Nama Terbaru</option>
-          <option value="">Nama</option>
-          <option value="">Terkecil</option>
-          <option value="">Terbesar</option>
+        <select name="spent-sort" id="">
+          <option value="latest">Nama Terbaru</option>
+          <option value="name">Nama</option>
+          <option value="smallest">Terkecil</option>
+          <option value="largest">Terbesar</option>
         </select>
       </div>
       <div class="spent-list">
@@ -111,9 +111,9 @@
         </div>
         <form action="">
           <label for="">Nama Pemasukan</label>
-          <input type="text" placeholder="Nama Budget" />
+          <input name="name-budget" type="text" placeholder="Nama Budget" />
           <label for="">Jumlah Pemasukan</label>
-          <input type="number" placeholder="Rp" />
+          <input name="total" type="number" placeholder="Rp" />
           <button type="submit">Simpan</button>
         </form>
       </div>
@@ -135,5 +135,7 @@
         </form>
       </div>
     </div>
+
+    <script src="main.js"></script>
   </body>
 </html>

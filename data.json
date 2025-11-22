@@ -1,6 +1,6 @@
 [
   {
-    "nama_budget": "bakso",
+    "nama_budget": "jajan",
     "total_budget": 20000,
     "pengeluaran": [
       {
@@ -12,6 +12,22 @@
         "nama_pengeluaran": "mie ayam",
         "tanggal": "2024-06-01",
         "jumlah_pengeluaran": 15000
+      }
+    ]
+  },
+  {
+    "nama_budget": "makan",
+    "total_budget": 20000,
+    "pengeluaran": [
+      {
+        "nama_pengeluaran": "es",
+        "tanggal": "2024-06-01",
+        "jumlah_pengeluaran": 15000
+      },
+      {
+        "nama_pengeluaran": "",
+        "tanggal": "",
+        "jumlah_pengeluaran": 
       }
     ]
   }

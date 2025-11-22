@@ -252,13 +252,13 @@ header h1 {
   border-radius: 1rem;
   width: 80%;
   max-width: 30rem;
-  animation: slide-up 0.5s ease-in-out;
+  animation: pop-up 0.5s ease-in-out;
 }
 
-@keyframes slide-up {
+@keyframes pop-up {
   from {
     opacity: 0;
-    transform: translateY(20%);
+    transform: translateY(0);
   }
   to {
     opacity: 1;
@@ -300,6 +300,62 @@ header h1 {
   background-color: #444;
   color: white;
   font-size: 1rem;
+}
+
+/* toast notification */
+.toast {
+  position: fixed;
+  top: 2rem;
+  left: 50%;
+  /* border: 2px solid rgba(255, 255, 255, 0.05); */
+  box-shadow: 0 8px 32px 0 rgba(82, 81, 81, 0.37);
+  color: #fff;
+  padding: 0.6rem 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translate(-50%, 8px); /* center horizontally + small Y offset */
+  transition: opacity 240ms ease, transform 240ms ease;
+  pointer-events: none;
+  z-index: 9999;
+  font-weight: 600;
+}
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0); /* centered and lifted into view */
+}
+.toast.success {
+  border: 2px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 8px 32px 0 rgba(82, 81, 81, 0.37);
+}
+
+/* icon buttons inside lists (edit / delete) */
+.spent-edit,
+.spent-delete,
+.budget-delete {
+  background: transparent;
+  border: none;
+  padding: 0.25rem;
+  margin: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.spent-edit i,
+.spent-delete i {
+  font-size: 1rem;
+}
+.spent-edit:focus,
+.spent-delete:focus,
+.budget-delete:focus {
+  outline: none;
+}
+.spent-edit:hover,
+.spent-delete:hover,
+.budget-delete:hover {
+  opacity: 0.9;
 }
 
 /* responsive */

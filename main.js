@@ -152,6 +152,25 @@ async function fetchBudgetsFromFile() {
   }
 }
 
+// normalize an array of raw budget objects (from data.json or user import)
+function normalizeBudgetsArray(data) {
+  if (!Array.isArray(data)) return [];
+  return data.map((d, i) => ({
+    id: Date.now() + i,
+    name: d.nama_budget || d.name || "Untitled",
+    amount: Number(d.total_budget ?? d.amount ?? 0),
+    spents: Array.isArray(d.pengeluaran)
+      ? d.pengeluaran.map((p) => ({
+          id: Date.now() + Math.floor(Math.random() * 100000) + i,
+          name: p.nama_pengeluaran || p.name || "-",
+          date: p.tanggal || p.date || "",
+          amount: Number(p.jumlah_pengeluaran ?? p.amount ?? 0),
+        }))
+      : [],
+    raw: d,
+  }));
+}
+
 function loadBudgetsFromStorage() {
   try {
     const raw = localStorage.getItem("budgets");
@@ -369,17 +388,6 @@ function populateDetail(budget) {
   if (!budgets || budgets.length === 0) {
     const fromFile = await fetchBudgetsFromFile();
     budgets = fromFile;
-    // persist the initial file data into localStorage so subsequent runs
-    // use the browser's saved copy and changes are preserved locally
-    if (Array.isArray(fromFile) && fromFile.length > 0) {
-      try {
-        saveBudgetsToStorage(fromFile);
-        // brief feedback to the user
-        showToast("Data awal diimpor ke localStorage", { duration: 1600 });
-      } catch (err) {
-        console.error("failed to persist initial data", err);
-      }
-    }
   }
   // keep in-memory state
   budgetsData = budgets;

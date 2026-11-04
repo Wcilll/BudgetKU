@@ -214,7 +214,7 @@ function renderBudgets(list) {
     el.className = "no-budgets";
     el.style.opacity = ".6";
     el.style.padding = "1rem";
-    el.style.textAlign = "center";
+    // el.style.textAlign = "center";
     el.textContent = "Tidak ada budget. Klik + untuk menambahkan.";
     budgetsContainer.insertBefore(el, addBtn || null);
     // show budgets page
@@ -226,13 +226,40 @@ function renderBudgets(list) {
     const card = document.createElement("div");
     card.className = "budget-card";
     card.dataset.id = b.id;
+
+    // Tombol hapus budget
+    const deleteBtn = document.createElement("button");
+    deleteBtn.className = "delete-budget-btn";
+    deleteBtn.innerHTML = '<i class="ph ph-trash"></i>';
+    deleteBtn.title = "Hapus Budget";
+    deleteBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); // Mencegah masuk ke halaman detail
+      hapusBudget(b.id);
+    });
+    card.appendChild(deleteBtn);
+
     const spentSum = sumSpents(b.spents);
     const remaining = Number(b.amount || 0) - spentSum;
-    card.innerHTML = `
+
+    // Progress bar logic
+    const percentage = Math.min((spentSum / (b.amount || 1)) * 100, 100);
+    let colorClass = "";
+    if (percentage >= 90) colorClass = "danger";
+    else if (percentage >= 70) colorClass = "warning";
+
+    const content = document.createElement("div");
+    content.innerHTML = `
       <h2 class="budget-name">${b.name}</h2>
       <p class="budget-amount">${formatRupiah(b.amount)}</p>
-      <p class="budget-total">Sisa ${formatRupiah(remaining)}</p>
+      <div class="progress-container">
+        <div class="progress-bar ${colorClass}" style="width: ${percentage}%"></div>
+      </div>
+      <div class="budget-stats">
+        <span>Terpakai: ${formatRupiah(spentSum)}</span>
+        <span>Sisa: ${formatRupiah(remaining)}</span>
+      </div>
     `;
+    card.appendChild(content);
 
     card.addEventListener("click", () => {
       // show detail page and populate
@@ -292,12 +319,12 @@ function populateDetail(budget) {
           break;
         case "smallest":
           sorted.sort(
-            (a, b) => (Number(a.amount) || 0) - (Number(b.amount) || 0)
+            (a, b) => (Number(a.amount) || 0) - (Number(b.amount) || 0),
           );
           break;
         case "largest":
           sorted.sort(
-            (a, b) => (Number(b.amount) || 0) - (Number(a.amount) || 0)
+            (a, b) => (Number(b.amount) || 0) - (Number(a.amount) || 0),
           );
           break;
         case "latest":
@@ -342,7 +369,7 @@ function populateDetail(budget) {
           const bIdx = budgetsData.findIndex((x) => x.id === budget.id);
           if (bIdx === -1) return;
           const spIdx = (budgetsData[bIdx].spents || []).findIndex(
-            (p) => p.id === id
+            (p) => p.id === id,
           );
           if (spIdx === -1) return;
           // remove expense
@@ -396,7 +423,7 @@ function populateDetail(budget) {
 // wire sort select to re-render expenses when changed
 (function wireSortSelect() {
   const sortSelect = document.querySelector(
-    "#budget-detail .spent-sort select"
+    "#budget-detail .spent-sort select",
   );
   if (!sortSelect) return;
   sortSelect.addEventListener("change", () => {
@@ -424,7 +451,7 @@ function showToast(message, { duration = 2500, type = "success" } = {}) {
       () => {
         if (toast.parentNode) toast.parentNode.removeChild(toast);
       },
-      { once: true }
+      { once: true },
     );
   }, duration);
 }
@@ -520,7 +547,7 @@ if (spentFormElement) {
     if (editingExpenseId) {
       // update existing expense
       const ei = budgetsData[idx].spents.findIndex(
-        (s) => s.id === editingExpenseId
+        (s) => s.id === editingExpenseId,
       );
       if (ei !== -1) {
         budgetsData[idx].spents[ei].name = expense.name;

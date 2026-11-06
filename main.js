@@ -419,6 +419,7 @@ function populateDetail(budget) {
   // keep in-memory state
   budgetsData = budgets;
   renderBudgets(budgetsData);
+  updateSummary();
 })();
 // wire sort select to re-render expenses when changed
 (function wireSortSelect() {
@@ -434,6 +435,58 @@ function populateDetail(budget) {
   });
 })();
 // small toast helper for success messages
+/**
+ * Fungsi untuk menghapus budget berdasarkan ID.
+ * Menghapus data dari array, menyimpan ke storage, dan memperbarui tampilan.
+ */
+function hapusBudget(id) {
+  const bIndex = budgetsData.findIndex((x) => x.id === id);
+  if (bIndex === -1) return;
+
+  const budgetName = budgetsData[bIndex].name;
+  const ok = confirm(
+    `Apakah Anda yakin ingin menghapus budget "${budgetName}"?`,
+  );
+
+  if (ok) {
+    // Hapus data dari array memori
+    budgetsData.splice(bIndex, 1);
+
+    // Simpan perubahan ke localStorage
+    saveBudgetsToStorage(budgetsData);
+
+    // Perbarui UI utama (list kartu budget)
+    renderBudgets(budgetsData);
+
+    // Perbarui ringkasan (summary)
+    updateSummary();
+
+    showToast(`Budget "${budgetName}" berhasil dihapus`, { duration: 1800 });
+  }
+}
+
+/**
+ * Memperbarui ringkasan total anggaran dan pengeluaran di bagian atas halaman.
+ */
+function updateSummary() {
+  const totalBudgetEl = document.querySelector("#total-budget");
+  const totalSpentEl = document.querySelector("#total-spent");
+
+  if (!totalBudgetEl || !totalSpentEl) return;
+
+  const totalAnggaran = budgetsData.reduce(
+    (acc, b) => acc + (Number(b.amount) || 0),
+    0,
+  );
+  let totalTerpakai = 0;
+  budgetsData.forEach((b) => {
+    totalTerpakai += sumSpents(b.spents);
+  });
+
+  totalBudgetEl.textContent = formatRupiah(totalAnggaran);
+  totalSpentEl.textContent = formatRupiah(totalTerpakai);
+}
+
 function showToast(message, { duration = 2500, type = "success" } = {}) {
   const toast = document.createElement("div");
   toast.className = `toast ${type}`;
@@ -474,6 +527,7 @@ if (addFormElement) {
         budgetsData[idx].amount = amount || budgetsData[idx].amount;
         saveBudgetsToStorage(budgetsData);
         renderBudgets(budgetsData);
+        updateSummary();
         // if user is viewing this budget, refresh detail view too
         if (currentBudgetId === editingBudgetId)
           populateDetail(budgetsData[idx]);
@@ -491,6 +545,7 @@ if (addFormElement) {
       budgetsData.push(newBudget);
       saveBudgetsToStorage(budgetsData);
       renderBudgets(budgetsData);
+      updateSummary();
       showToast("Budget tersimpan", { duration: 1600 });
     }
 
@@ -565,6 +620,7 @@ if (spentFormElement) {
     saveBudgetsToStorage(budgetsData);
     populateDetail(budgetsData[idx]);
     renderBudgets(budgetsData);
+    updateSummary();
 
     // feedback and close
     const spentModal = document.querySelector("#spent-form");

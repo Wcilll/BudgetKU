@@ -12,6 +12,10 @@ const spentBtn = document.querySelector(".spent-button");
 const addForm = document.querySelector("#add-form");
 const spentForm = document.querySelector("#spent-form");
 const closeIcons = document.querySelectorAll(".modal .ph-x");
+const deleteModal = document.querySelector("#delete-confirmation");
+const confirmDeleteBtn = document.querySelector("#confirm-delete");
+const cancelDeleteBtn = document.querySelector("#cancel-delete");
+let budgetIdToDelete = null;
 
 // navigasi back
 backHomeBtn.addEventListener("click", () => {
@@ -38,6 +42,24 @@ spentBtn.addEventListener("click", () => {
 // close modal (X)
 closeIcons.forEach((icon) => {
   icon.addEventListener("click", () => {
+    // Event Listener untuk tombol konfirmasi hapus
+    if (confirmDeleteBtn) {
+      confirmDeleteBtn.addEventListener("click", () => {
+        if (budgetIdToDelete !== null) {
+          eksekusiHapus(budgetIdToDelete);
+          deleteModal.classList.add("hidden");
+          budgetIdToDelete = null;
+        }
+      });
+    }
+
+    if (cancelDeleteBtn) {
+      cancelDeleteBtn.addEventListener("click", () => {
+        deleteModal.classList.add("hidden");
+        budgetIdToDelete = null;
+      });
+    }
+
     icon.closest(".modal").classList.add("hidden");
   });
 });
@@ -436,33 +458,33 @@ function populateDetail(budget) {
 })();
 // small toast helper for success messages
 /**
- * Fungsi untuk menghapus budget berdasarkan ID.
- * Menghapus data dari array, menyimpan ke storage, dan memperbarui tampilan.
+ * Fungsi untuk menghapus budget dengan UI minimalis & animasi halus.
  */
 function hapusBudget(id) {
   const bIndex = budgetsData.findIndex((x) => x.id === id);
   if (bIndex === -1) return;
 
   const budgetName = budgetsData[bIndex].name;
-  const ok = confirm(
-    `Apakah Anda yakin ingin menghapus budget "${budgetName}"?`,
-  );
 
-  if (ok) {
-    // Hapus data dari array memori
+  // Konfirmasi lebih singkat
+  if (!confirm(`Apakah Anda yakin ingin menghapus budget "${budgetName}"?`))
+    return;
+
+  // Efek visual kartu menghilang
+  const cardEl = document.querySelector(`.budget-card[data-id="${id}"]`);
+  if (cardEl) cardEl.classList.add("removing");
+
+  // Proses hapus setelah animasi selesai
+  setTimeout(() => {
     budgetsData.splice(bIndex, 1);
 
-    // Simpan perubahan ke localStorage
     saveBudgetsToStorage(budgetsData);
 
-    // Perbarui UI utama (list kartu budget)
     renderBudgets(budgetsData);
 
-    // Perbarui ringkasan (summary)
     updateSummary();
-
-    showToast(`Budget "${budgetName}" berhasil dihapus`, { duration: 1800 });
-  }
+    showToast(`"${budgetName}" dihapus`, { duration: 1500 });
+  }, 400);
 }
 
 /**
